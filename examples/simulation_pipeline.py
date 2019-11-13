@@ -27,7 +27,7 @@ pipeline = stimela.Recipe("Simulation Example",     # Recipe name
                           log_dir=os.path.join(OUTPUT, "logs")
                           )
 
-pipeline.JOB_TYPE = "podman"
+pipeline.JOB_TYPE = "singularity"
 
 # 1: Make empty MS
 pipeline.add("cab/simms",                   # Executor image to start container from
@@ -67,20 +67,20 @@ pipeline.add("cab/simulator",
              label="Simulating visibilities")
 
 
-pipeline.add('cab/casa_plotms',
-             'plot_vis',
-             {
-                 "vis":   MS,
-                 "xaxis":   'uvdist',
-                 "yaxis":   'amp',
-                 "xdatacolumn":   'corrected',
-                 "ydatacolumn":   'corrected',
-                 "plotfile":   PREFIX+'-amp_uvdist.png',
-                 "overwrite":   True,
-             },
-             input=INPUT,
-             output=OUTPUT,
-             label='plot_amp_uvdist:: Plot amplitude vs uv-distance')
+#pipeline.add('cab/casa_plotms',
+#             'plot_vis',
+#             {
+#                 "vis":   MS,
+#                 "xaxis":   'uvdist',
+#                 "yaxis":   'amp',
+#                 "xdatacolumn":   'corrected',
+#                 "ydatacolumn":   'corrected',
+#                 "plotfile":   PREFIX+'-amp_uvdist.png',
+#                 "overwrite":   True,
+#             },
+#             input=INPUT,
+#             output=OUTPUT,
+#             label='plot_amp_uvdist:: Plot amplitude vs uv-distance')
 
 # 3: Image
 # Make things a bit interesting by imaging with different weights

@@ -8,7 +8,7 @@ export MSDIR=/scratch/msdir
 test -d $OUTPUT/.casa || { test -d /root/.casa && cp -r /root/.casa $OUTPUT/.casa; } || echo " "
 export HOME=$OUTPUT
 /etc/init.d/xvfb start || echo "Virtual frame buffer not installed. You may not be able to plot with this cab" 
-python /scratch/code/run.py > /scratch/logfile 2>&1 #2>&1 | tee -a /scratch/logfile 
+python /scratch/code/run.py 2>&1 | tee /scratch/logfile 
 EXIT_STAT=${PIPESTATUS[0]}
 /etc/init.d/xvfb stop || echo ""
 exit $EXIT_STAT

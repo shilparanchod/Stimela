@@ -62,6 +62,40 @@ def assign(key, value):
 
 
 def xrun(command, options, log=None, _log_container_as_started=False, logfile=None, timeout=-1, kill_callback=None):
+    """ 
+        Run something on command line.
+
+        Example: _run("ls", ["-lrt", "../"])
+    """
+
+    cmd = " ".join([command]+ list(map(str, options)) )
+
+    if log:
+        log.info("Running: %s"%cmd)
+    else:
+        sys.stdout.write('running: %s\n'%cmd)
+
+    sys.stdout.flush()
+
+    process = subprocess.Popen(cmd,
+                  stderr=subprocess.PIPE if not hasattr(sys.stderr, "read") else sys.stderr,
+                  stdout=subprocess.PIPE if not hasattr(sys.stdout, "read") else sys.stdout,
+                  shell=True)
+    out, err = None, None
+    if process.stdout or process.stderr:
+
+        out, err = process.comunicate()
+        sys.stdout.write(out)
+        sys.stderr.write(err)
+        return out, err 
+    else:
+        process.wait()
+    if process.returncode:
+         raise SystemError('%s: returns errr code %d'%(command, process.returncode))
+    return out, err
+
+
+def xrun_new(command, options, log=None, _log_container_as_started=False, logfile=None, timeout=-1, kill_callback=None):
     """
         Run something on command line.
 
